@@ -19,7 +19,8 @@ class Cell
 		@border_padding = 2
 
 		@font = RES.cell_font
-		@font_color = Gosu::Color.argb 0xff_ff0000
+		@font_color_field = Gosu::Color.argb 0xff_0000ff
+		@font_color_bomb = Gosu::Color.argb 0xff_ff0000
 
 		@bomb_count = 0
 		@type = :field
@@ -45,7 +46,9 @@ class Cell
 
 		# Draw bomb_count
 		if (is_field?)
-			@font.draw_rel @bomb_count.to_s, (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @font_color
+			@font.draw_rel @bomb_count.to_s, (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @font_color_field
+		elsif (is_bomb?)
+			@font.draw_rel "B", (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @font_color_bomb
 		end
 	end
 end
