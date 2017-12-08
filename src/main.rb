@@ -8,7 +8,7 @@ class Game < Gosu::Window
 
 		@grid = Grid.new
 
-		super Settings.screen[:w] * 2, Settings.screen[:h] * 2
+		super Settings.screen[:w], Settings.screen[:h]
 		self.caption = "Minesweeper!"
 	end
 
@@ -29,6 +29,7 @@ class Game < Gosu::Window
 end
 
 
+RES = Resource.new
 $game = Game.new
 $game.show
 

@@ -1,6 +1,7 @@
 
 class Cell
 	attr_reader :index, :x,:y, :w,:h
+	attr_accessor :bomb_count
 
 	def initialize args
 		@x = args[:x]
@@ -16,6 +17,9 @@ class Cell
 		@color = Settings.cells[:color]
 		@border_color = Settings.cells[:border_color]
 		@border_padding = 2
+
+		@font = RES.cell_font
+		@font_color = Gosu::Color.argb 0xff_ff0000
 
 		@bomb_count = 0
 		@type = :field
@@ -37,7 +41,12 @@ class Cell
 		# Draw border
 		Gosu.draw_rect @x,@y, @w,@h, @border_color, 5
 		# Draw cell
-		Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - @border_padding * 2), (@h - @border_padding * 2), @color, 10
+		Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @color, 10
+
+		# Draw bomb_count
+		if (is_field?)
+			@font.draw_rel @bomb_count.to_s, (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @font_color
+		end
 	end
 end
 

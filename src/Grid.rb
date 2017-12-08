@@ -26,7 +26,7 @@ class Grid
 			cells << cells_row
 		end
 
-		bombs = ((cells.size.to_f / 100.0) * Settings.cells[:bombs]).round
+		bombs = ((cells.flatten.size.to_f / 100.0) * Settings.cells[:bombs]).round
 		bombs.times do |n|
 			success = false
 			while (!success)
@@ -45,8 +45,10 @@ class Grid
 	def check_adjacent
 		@cells.each do |row|
 			row.each do |cell|
-				next  unless (cell.is_bomb?)
-				get_adjacent_cells(cell).each do |cell|
+				next  if (cell.is_bomb?)
+				get_adjacent_cells(cell).each do |adj|
+					next  if (adj.nil?)
+					cell.bomb_count += 1  if (adj.is_bomb?)
 				end
 			end
 		end
@@ -92,6 +94,7 @@ class Grid
 			end
 		end
 
+		return cells
 	end
 
 	def draw
