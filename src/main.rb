@@ -14,6 +14,14 @@ class Game < Gosu::Window
 
 	def button_down id
 		close  if (id == Gosu::KB_Q)
+
+		if (id == Gosu::MS_LEFT)
+			@grid.click x: mouse_x, y: mouse_y
+		end
+	end
+
+	def needs_cursor?
+		true
 	end
 
 	def update

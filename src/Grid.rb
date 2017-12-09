@@ -11,6 +11,24 @@ class Grid
 		check_adjacent
 	end
 
+	def click pos
+		cell = find_cell pos: { x: pos[:x], y: pos[:y] }
+		@activated_cells = []
+		activate_cell cell
+	end
+
+	def activate_cell cell
+		return  if (cell.nil?)
+		cell.activate!
+		@activated_cells << cell
+		if (cell.no_bombs?)
+			get_adjacent_cells(cell).each do |c|
+				next  if (@activated_cells.include? c)
+				activate_cell c
+			end
+		end
+	end
+
 	def gen_cells
 		cells = []
 
