@@ -83,7 +83,10 @@ class Grid
 		cells = []
 		[-1,0,1].each do |n1|
 			[-1,0,1].each do |n2|
-				next  if (n1 == 0 && n2 == 0)
+				next  if (
+					(n1 == 0 && n2 == 0) ||
+					(cell.index[:x] + n2 < 0 || cell.index[:y] + n1 < 0)
+				)
 				found = find_cell(
 					index: {
 						x: (cell.index[:x] + n2),
