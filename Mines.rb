@@ -5,8 +5,6 @@
 ########################################
 
 require 'gosu'
-require 'byebug'
-require 'awesome_print'
 
 require './src/Settings'
 require './src/Resource'

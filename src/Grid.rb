@@ -16,7 +16,7 @@ class Grid
 
 	def click pos
 		cell = find_cell pos: { x: pos[:x], y: pos[:y] }
-		return  if (cell.is_flagged?)
+		return  if (cell.nil? || cell.is_flagged?)
 		activate_cell cell
 		# Check if all cells are activated - win condition
 		if (@activated_cells.size == @cells.flatten.size - @bomb_count)
@@ -26,7 +26,7 @@ class Grid
 
 	def click_alt pos
 		cell = find_cell pos: { x: pos[:x], y: pos[:y] }
-		return  if (cell.is_activated?)
+		return  if (cell.nil? || cell.is_activated?)
 		cell.flag!
 	end
 
