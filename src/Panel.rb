@@ -20,7 +20,6 @@ class Panel
 				(pos[:y] >= @y + (@h / 2) - (@smileys[@smiley_state].height / 2)) &&
 				(pos[:y] <= @y + (@h / 2) + (@smileys[@smiley_state].height / 2))
 			 )
-			@smiley_state = :neutral
 			$game.reset
 		end
 	end

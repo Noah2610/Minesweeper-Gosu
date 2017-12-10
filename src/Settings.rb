@@ -9,8 +9,9 @@ class Settings
 
 	def self.controls
 		{
-			primary:    [Gosu::MS_LEFT, Gosu::KB_C],
-			secondary:  [Gosu::MS_RIGHT, Gosu::KB_X]
+			primary:    [ Gosu::MS_LEFT,  Gosu::KB_C ],
+			secondary:  [ Gosu::MS_RIGHT, Gosu::KB_X ],
+			reset:      [ Gosu::KB_N,     Gosu::KB_R ]
 		}
 	end
 

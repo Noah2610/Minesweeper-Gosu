@@ -40,6 +40,7 @@ class Game < Gosu::Window
 		@game_running = true
 		@has_won = false
 		@has_lost = false
+		@panel.set_smiley :neutral
 		@grid = Grid.new y: Settings.panel[:size][:h]
 	end
 
@@ -53,6 +54,8 @@ class Game < Gosu::Window
 		elsif (controls[:secondary].include? id)
 			@grid.click_alt x: mouse_x, y: mouse_y  if (@game_running)
 			@panel.click x: mouse_x, y: mouse_y
+		elsif (controls[:reset].include? id)
+			reset
 		end
 	end
 
