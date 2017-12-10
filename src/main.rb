@@ -52,6 +52,7 @@ class Game < Gosu::Window
 	end
 
 	def update
+		@grid.mouse_pos x: mouse_x, y: mouse_y
 	end
 
 	def draw

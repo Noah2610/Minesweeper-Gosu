@@ -23,6 +23,7 @@ class Cell
 		@bomb_count = 0
 		@type = :field
 		@flagged = false
+		@mouse_hovering = false
 	end
 
 	def to_bomb!
@@ -64,6 +65,14 @@ class Cell
 		return @flagged
 	end
 
+	def mouse_hover
+		@mouse_hovering = true
+	end
+
+	def no_mouse_hover
+		@mouse_hovering = false
+	end
+
 	def draw
 		# Draw border
 		Gosu.draw_rect @x,@y, @w,@h, @colors[:border], 5
@@ -72,11 +81,13 @@ class Cell
 		if (@hidden)
 			if (is_flagged?)
 				# Draw cell bg
-				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:flagged], 10
+				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:flagged], 10              unless (@mouse_hovering)
+				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:flagged_mouse_hover], 10  if (@mouse_hovering)
 				@font.draw_rel "?", (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @colors[:font_flagged]
 			else
 				# Draw cell bg
-				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:hidden], 10
+				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:hidden], 10               unless (@mouse_hovering)
+				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:hidden_mouse_hover], 10   if (@mouse_hovering)
 			end
 		else
 			if (is_field?)

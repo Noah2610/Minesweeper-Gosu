@@ -23,14 +23,16 @@ class Settings
 			bombs:          20.0,    # in percent
 			border_padding: 2,
 			colors: {
-				hidden:        Gosu::Color.argb(0xff_999999),
-				shown:         Gosu::Color.argb(0xff_cccccc),
-				bomb_shown:    Gosu::Color.argb(0xff_222222),
-				border:        Gosu::Color.argb(0xff_000000),
-				flagged:       Gosu::Color.argb(0xff_444444),
-				font_field:    Gosu::Color.argb(0xff_0000ff),
-				font_bomb:     Gosu::Color.argb(0xff_ff0000),
-				font_flagged:  Gosu::Color.argb(0xff_cc4422)
+				hidden:               Gosu::Color.argb(0xff_999999),
+				hidden_mouse_hover:   Gosu::Color.argb(0xff_bbbbbb),
+				shown:                Gosu::Color.argb(0xff_cccccc),
+				bomb_shown:           Gosu::Color.argb(0xff_222222),
+				border:               Gosu::Color.argb(0xff_000000),
+				flagged:              Gosu::Color.argb(0xff_444444),
+				flagged_mouse_hover:  Gosu::Color.argb(0xff_666666),
+				font_field:           Gosu::Color.argb(0xff_0000ff),
+				font_bomb:            Gosu::Color.argb(0xff_ff0000),
+				font_flagged:         Gosu::Color.argb(0xff_cc4422)
 			}
 		}
 	end

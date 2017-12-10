@@ -10,6 +10,8 @@ class Grid
 		@activated_cells = []
 		@bomb_count = 0
 
+		@cell_hover = nil
+
 		@cells = gen_cells
 		check_adjacent
 	end
@@ -28,6 +30,15 @@ class Grid
 		cell = find_cell pos: { x: pos[:x], y: pos[:y] }
 		return  if (cell.nil? || cell.is_activated?)
 		cell.flag!
+	end
+
+	def mouse_pos pos
+		cell = find_cell pos: { x: pos[:x], y: pos[:y] }
+		if (cell != @cell_hover)
+			@cell_hover.no_mouse_hover  unless (@cell_hover.nil?)
+			@cell_hover = cell
+			@cell_hover.mouse_hover
+		end
 	end
 
 	def activate_cell cell
