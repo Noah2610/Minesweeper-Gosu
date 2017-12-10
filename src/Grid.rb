@@ -1,11 +1,14 @@
 
 class Grid
-	def initialize
-		@x = 0
-		@y = 0
-		@w = Settings.screen[:w]
-		@h = Settings.screen[:h]
-		@cell_size = Settings.cells[:size]
+	def initialize args = {}
+		@x = args[:x] || 0
+		@y = args[:y] || 0
+		@w = args[:w] || Settings.screen[:w] - @x
+		@h = args[:h] || Settings.screen[:h] - @y
+		@cell_size = args[:cell_size] || Settings.cells[:size]
+
+		@activated_cells = []
+		@bomb_count = 0
 
 		@cells = gen_cells
 		check_adjacent
@@ -13,13 +16,21 @@ class Grid
 
 	def click pos
 		cell = find_cell pos: { x: pos[:x], y: pos[:y] }
-		@activated_cells = []
 		activate_cell cell
+		# Check if all cells are activated - win condition
+		if (@activated_cells.size == @cells.flatten.size - @bomb_count)
+			$game.win
+		end
 	end
 
 	def activate_cell cell
 		return  if (cell.nil?)
 		cell.activate!
+		# lose condition
+		if (cell.is_bomb?)
+			$game.lose
+			return
+		end
 		@activated_cells << cell
 		if (cell.no_bombs?)
 			get_adjacent_cells(cell).each do |c|
@@ -38,14 +49,16 @@ class Grid
 				cells_row << Cell.new(
 					x: (@cell_size[:w] * col),
 					y: (@cell_size[:h] * row),
-					index: { x: col, y: row }
+					index: { x: col, y: row },
+					size: { w: @cell_size[:w], h: @cell_size[:h] }
 				)
 			end
 			cells << cells_row
 		end
 
-		bombs = ((cells.flatten.size.to_f / 100.0) * Settings.cells[:bombs]).round
-		bombs.times do |n|
+		# Add bombs
+		@bomb_count = ((cells.flatten.size.to_f / 100.0) * Settings.cells[:bombs]).round
+		@bomb_count.times do |n|
 			success = false
 			while (!success)
 				cell = cells.sample.sample

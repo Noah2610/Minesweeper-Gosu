@@ -14,8 +14,12 @@ class Settings
 				h: 32
 			},
 			bombs:        20.0,    # in percent
-			color:        Gosu::Color.argb(0xff_999999),
-			border_color: Gosu::Color.argb(0xff_000000)
+			colors: {
+				hidden:     Gosu::Color.argb(0xff_999999),
+				shown:      Gosu::Color.argb(0xff_cccccc),
+				bomb_shown: Gosu::Color.argb(0xff_222222),
+				border:     Gosu::Color.argb(0xff_000000)
+			}
 		}
 	end
 

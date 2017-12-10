@@ -14,8 +14,7 @@ class Cell
 			y: args[:index][:y]
 		}
 
-		@color = Settings.cells[:color]
-		@border_color = Settings.cells[:border_color]
+		@colors = Settings.cells[:colors]
 		@border_padding = 2
 
 		@font = RES.cell_font
@@ -51,15 +50,22 @@ class Cell
 
 	def draw
 		# Draw border
-		Gosu.draw_rect @x,@y, @w,@h, @border_color, 5
-		# Draw cell
-		Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @color, 10
+		Gosu.draw_rect @x,@y, @w,@h, @colors[:border], 5
 
 		# Draw bomb_count
-		unless (@hidden)
+		if (@hidden)
+			# Draw cell
+			Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:hidden], 10
+		else
 			if (is_field?)
-				@font.draw_rel @bomb_count.to_s, (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @font_color_field
+				# Draw field
+				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:shown], 10
+				# Bomb count font
+				@font.draw_rel @bomb_count.to_s, (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @font_color_field    unless (no_bombs?)
 			elsif (is_bomb?)
+				# Draw bomb
+				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:bomb_shown], 10
+				# Bomb font
 				@font.draw_rel "B", (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @font_color_bomb
 			end
 		end
