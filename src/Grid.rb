@@ -54,8 +54,8 @@ class Grid
 			cells_row = []
 			(@w.to_f / @cell_size[:w].to_f).floor.times do |col|
 				cells_row << Cell.new(
-					x: (@cell_size[:w] * col),
-					y: (@cell_size[:h] * row),
+					x: (@x + (@cell_size[:w] * col)),
+					y: (@y + (@cell_size[:h] * row)),
 					index: { x: col, y: row },
 					size: { w: @cell_size[:w], h: @cell_size[:h] }
 				)

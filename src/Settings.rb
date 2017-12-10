@@ -35,5 +35,18 @@ class Settings
 		}
 	end
 
+	def self.panel
+		{
+			size: {
+				w:     Settings.screen[:w],
+				h:     64
+			},
+			colors: {
+				bg:    Gosu::Color.argb(0xff_cccccc),
+				font:  Gosu::Color.argb(0xff_000000)
+			}
+		}
+	end
+
 end
 

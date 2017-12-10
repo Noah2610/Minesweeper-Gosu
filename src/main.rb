@@ -16,17 +16,21 @@ class Game < Gosu::Window
 
 		@final_font = Gosu::Font.new 64
 
-		@grid = Grid.new
+		@panel = Panel.new
+		panel_size = Settings.panel[:size]
+		@grid = Grid.new y: panel_size[:h]
 
 		super Settings.screen[:w], Settings.screen[:h]
 		self.caption = "Minesweeper!"
 	end
 
 	def win
+		@panel.set_smiley :happy
 		@has_won = true
 	end
 
 	def lose
+		@panel.set_smiley :angry
 		@has_lost = true
 	end
 
@@ -55,6 +59,8 @@ class Game < Gosu::Window
 
 		# Background
 		Gosu.draw_rect 0,0, screen[:w],screen[:h], @colors[:bg], 0
+		# Draw panel
+		@panel.draw
 		# Draw Grid
 		@grid.draw
 
