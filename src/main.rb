@@ -11,6 +11,7 @@ class Game < Gosu::Window
 			final_bg:  Gosu::Color.argb(0x99_cccccc)
 		}
 
+		@game_running = true
 		@has_won = false
 		@has_lost = false
 
@@ -26,18 +27,20 @@ class Game < Gosu::Window
 
 	def win
 		@panel.set_smiley :happy
+		@game_running = false
 		@has_won = true
 	end
 
 	def lose
 		@panel.set_smiley :angry
+		@game_running = false
 		@has_lost = true
 	end
 
 	def button_down id
 		close   if (id == Gosu::KB_Q)
 
-		return  if (@has_won || @has_lost)
+		return  unless (@game_running)
 
 		controls = Settings.controls
 		if (controls[:primary].include? id)
@@ -52,7 +55,7 @@ class Game < Gosu::Window
 	end
 
 	def update
-		@grid.mouse_pos x: mouse_x, y: mouse_y
+		@grid.mouse_pos x: mouse_x, y: mouse_y  if (@game_running)
 	end
 
 	def draw

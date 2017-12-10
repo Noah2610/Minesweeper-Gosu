@@ -34,6 +34,7 @@ class Grid
 
 	def mouse_pos pos
 		cell = find_cell pos: { x: pos[:x], y: pos[:y] }
+		return  if (cell.nil?)
 		if (cell != @cell_hover)
 			@cell_hover.no_mouse_hover  unless (@cell_hover.nil?)
 			@cell_hover = cell
