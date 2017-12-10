@@ -14,6 +14,17 @@ class Panel
 		@smiley_scale = (@h.to_f * 0.9) / @smileys[:neutral].height.to_f
 	end
 
+	def click pos
+		if ((pos[:x] >= @x + (@w / 2) - (@smileys[@smiley_state].width / 2)) &&
+			  (pos[:x] <= @x + (@w / 2) + (@smileys[@smiley_state].width / 2)) &&
+				(pos[:y] >= @y + (@h / 2) - (@smileys[@smiley_state].height / 2)) &&
+				(pos[:y] <= @y + (@h / 2) + (@smileys[@smiley_state].height / 2))
+			 )
+			@smiley_state = :neutral
+			$game.reset
+		end
+	end
+
 	def set_smiley state
 		case state
 		when :neutral

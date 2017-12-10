@@ -18,8 +18,7 @@ class Game < Gosu::Window
 		@final_font = Gosu::Font.new 64
 
 		@panel = Panel.new
-		panel_size = Settings.panel[:size]
-		@grid = Grid.new y: panel_size[:h]
+		@grid = Grid.new y: Settings.panel[:size][:h]
 
 		super Settings.screen[:w], Settings.screen[:h]
 		self.caption = "Minesweeper!"
@@ -37,16 +36,23 @@ class Game < Gosu::Window
 		@has_lost = true
 	end
 
+	def reset
+		@game_running = true
+		@has_won = false
+		@has_lost = false
+		@grid = Grid.new y: Settings.panel[:size][:h]
+	end
+
 	def button_down id
 		close   if (id == Gosu::KB_Q)
 
-		return  unless (@game_running)
-
 		controls = Settings.controls
 		if (controls[:primary].include? id)
-			@grid.click x: mouse_x, y: mouse_y
+			@grid.click x: mouse_x, y: mouse_y      if (@game_running)
+			@panel.click x: mouse_x, y: mouse_y
 		elsif (controls[:secondary].include? id)
-			@grid.click_alt x: mouse_x, y: mouse_y
+			@grid.click_alt x: mouse_x, y: mouse_y  if (@game_running)
+			@panel.click x: mouse_x, y: mouse_y
 		end
 	end
 
