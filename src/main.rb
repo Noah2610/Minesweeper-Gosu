@@ -35,8 +35,11 @@ class Game < Gosu::Window
 
 		return  if (@has_won || @has_lost)
 
-		if (id == Gosu::MS_LEFT)
+		controls = Settings.controls
+		if (controls[:primary].include? id)
 			@grid.click x: mouse_x, y: mouse_y
+		elsif (controls[:secondary].include? id)
+			@grid.click_alt x: mouse_x, y: mouse_y
 		end
 	end
 

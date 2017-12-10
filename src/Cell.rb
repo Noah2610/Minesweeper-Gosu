@@ -15,15 +15,14 @@ class Cell
 		}
 
 		@colors = Settings.cells[:colors]
-		@border_padding = 2
+		@border_padding = Settings.cells[:border_padding]
 
 		@font = RES.cell_font
-		@font_color_field = Gosu::Color.argb 0xff_0000ff
-		@font_color_bomb = Gosu::Color.argb 0xff_ff0000
 
 		@hidden = true
 		@bomb_count = 0
 		@type = :field
+		@flagged = false
 	end
 
 	def to_bomb!
@@ -48,25 +47,48 @@ class Cell
 		@hidden = false
 	end
 
+	def is_activated?
+		return !@hidden
+	end
+
+	def flag!
+		case @flagged
+		when false
+			@flagged = true
+		when true
+			@flagged = false
+		end
+	end
+
+	def is_flagged?
+		return @flagged
+	end
+
 	def draw
 		# Draw border
 		Gosu.draw_rect @x,@y, @w,@h, @colors[:border], 5
 
 		# Draw bomb_count
 		if (@hidden)
-			# Draw cell
-			Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:hidden], 10
+			if (is_flagged?)
+				# Draw cell bg
+				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:flagged], 10
+				@font.draw_rel "?", (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @colors[:font_flagged]
+			else
+				# Draw cell bg
+				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:hidden], 10
+			end
 		else
 			if (is_field?)
 				# Draw field
 				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:shown], 10
 				# Bomb count font
-				@font.draw_rel @bomb_count.to_s, (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @font_color_field    unless (no_bombs?)
+				@font.draw_rel @bomb_count.to_s, (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @colors[:font_field]    unless (no_bombs?)
 			elsif (is_bomb?)
 				# Draw bomb
 				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:bomb_shown], 10
 				# Bomb font
-				@font.draw_rel "B", (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @font_color_bomb
+				@font.draw_rel "B", (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @colors[:font_bomb]
 			end
 		end
 	end
