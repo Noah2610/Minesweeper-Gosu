@@ -43,7 +43,7 @@ class Grid
 	end
 
 	def activate_cell cell
-		return  if (cell.nil?)
+		return  if (cell.nil? || cell.is_activated?)
 		cell.activate!
 		# lose condition
 		if (cell.is_bomb?)
