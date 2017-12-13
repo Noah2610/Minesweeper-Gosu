@@ -26,6 +26,16 @@ class Cell
 		@mouse_hovering = false
 	end
 
+	def set_pos pos
+		@x = pos[:x]    unless (pos[:x].nil?)
+		@y = pos[:y]    unless (pos[:y].nil?)
+	end
+
+	def add_pos pos
+		@x += pos[:x]   unless (pos[:x].nil?)
+		@y += pos[:y]   unless (pos[:y].nil?)
+	end
+
 	def to_bomb!
 		@type = :bomb
 	end

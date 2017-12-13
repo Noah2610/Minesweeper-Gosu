@@ -17,8 +17,13 @@ class Game < Gosu::Window
 
 		@final_font = Gosu::Font.new 64
 
+		@grid_args = {
+			y:     Settings.panel[:size][:h],
+			#grid:  { x: 16, y: 16 }
+		}
+
 		@panel = Panel.new
-		@grid = Grid.new y: Settings.panel[:size][:h]
+		@grid = Grid.new @grid_args
 
 		super Settings.screen[:w], Settings.screen[:h]
 		self.caption = "Minesweeper!"
@@ -41,7 +46,7 @@ class Game < Gosu::Window
 		@has_won = false
 		@has_lost = false
 		@panel.set_smiley :neutral
-		@grid = Grid.new y: Settings.panel[:size][:h]
+		@grid = Grid.new @grid_args
 	end
 
 	def button_down id

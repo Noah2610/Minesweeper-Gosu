@@ -2,8 +2,8 @@
 class Settings
 	def self.screen
 		{
-			w: 640,
-			h: 480
+			w: 960,
+			h: 640
 		}
 	end
 

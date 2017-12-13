@@ -5,6 +5,7 @@
 ########################################
 
 require 'gosu'
+require 'byebug'
 
 require './src/Settings'
 require './src/Resource'

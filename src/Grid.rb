@@ -6,6 +6,7 @@ class Grid
 		@w = args[:w] || Settings.screen[:w] - @x
 		@h = args[:h] || Settings.screen[:h] - @y
 		@cell_size = args[:cell_size] || Settings.cells[:size]
+		@grid = args[:grid] || { x: nil, y: nil }
 
 		@activated_cells = []
 		@bomb_count = 0
@@ -14,6 +15,8 @@ class Grid
 
 		@cells = gen_cells
 		check_adjacent
+		center_grid         unless (@grid == { x: nil, y: nil })
+		
 	end
 
 	def click pos
@@ -62,9 +65,17 @@ class Grid
 	def gen_cells
 		cells = []
 
-		(@h.to_f / @cell_size[:h].to_f).floor.times do |row|
+		grid = {
+			x: @w.to_f / @cell_size[:w].to_f,
+			y: @h.to_f / @cell_size[:h].to_f
+		}
+
+		@grid[:x] = @grid[:x] || grid[:x]
+		@grid[:y] = @grid[:y] || grid[:y]
+
+		@grid[:y].floor.times do |row|
 			cells_row = []
-			(@w.to_f / @cell_size[:w].to_f).floor.times do |col|
+			@grid[:x].floor.times do |col|
 				cells_row << Cell.new(
 					x: (@x + (@cell_size[:w] * col)),
 					y: (@y + (@cell_size[:h] * row)),
@@ -89,7 +100,6 @@ class Grid
 		end
 
 		return cells
-
 	end
 
 	def check_adjacent
@@ -101,6 +111,33 @@ class Grid
 					cell.bomb_count += 1  if (adj.is_bomb?)
 				end
 			end
+		end
+	end
+
+	def center_grid
+		# Center the grid of cells
+		center_cell = find_cell(
+			index: {
+				x: ((@cells[0].size - 1) / 2).floor,
+				y: ((@cells.size - 1) / 2).floor
+			}
+		)
+		center_pos = {
+			x:  (@x + (@w / 2) - (center_cell.w / 2)),
+			y:  (@y + (@h / 2) - (center_cell.h / 2))
+		}
+		diff = {
+			x:  (center_pos[:x] - center_cell.x),
+			y:  (center_pos[:y] - center_cell.y)
+		}
+
+		
+		# if grid is even, adjust position(s)
+		diff[:x] -= center_cell.w / 2  if (@grid[:x] % 2 == 0)
+		diff[:y] -= center_cell.h / 2  if (@grid[:y] % 2 == 0)
+
+		@cells.flatten.each do |cell|
+			cell.add_pos diff
 		end
 	end
 
