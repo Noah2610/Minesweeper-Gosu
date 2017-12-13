@@ -32,6 +32,7 @@ class Grid
 		activate_cell cell
 		# Check if all cells are activated - win condition
 		if (@activated_cells.size == @cells.flatten.size - @bomb_count)
+			reveal_cells
 			$game.win
 		end
 	end

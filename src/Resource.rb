@@ -6,9 +6,9 @@ class Resource
 		}
 		@images = {
 			smiley: {
-				neutral:  Gosu::Image.new("./images/smiley_neutral.png", retro: true),
-				happy:    Gosu::Image.new("./images/smiley_happy.png", retro: true),
-				angry:    Gosu::Image.new("./images/smiley_angry.png", retro: true)
+				neutral:  Gosu::Image.new(File.join(DIR, "images/smiley_neutral.png"), retro: true),
+				happy:    Gosu::Image.new(File.join(DIR, "images/smiley_happy.png"), retro: true),
+				angry:    Gosu::Image.new(File.join(DIR, "images/smiley_angry.png"), retro: true)
 			}
 		}
 	end

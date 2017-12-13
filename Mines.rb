@@ -1,17 +1,20 @@
 #!/bin/env ruby
 
-########################################
-###           Minesweeper            ###
-########################################
+####################################################
+###                 Minesweeper!                 ###
+###              by Noah Rosenzweig              ###
+### https://github.com/Noah2610/Minesweeper-Gosu ###
+####################################################
 
+DIR = "./#{File.dirname(__FILE__)}"
 require 'gosu'
 require 'byebug'
 
-require './src/Settings'
-require './src/Resource'
-require './src/Panel'
-require './src/Grid'
-require './src/Cell'
-require './src/main'
+require File.join DIR, 'src/Settings'
+require File.join DIR, 'src/Resource'
+require File.join DIR, 'src/Panel'
+require File.join DIR, 'src/Grid'
+require File.join DIR, 'src/Cell'
+require File.join DIR, 'src/main'
 
 

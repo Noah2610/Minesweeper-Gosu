@@ -8,7 +8,8 @@ class Game < Gosu::Window
 			bg:        Gosu::Color.argb(0xff_ffffff),
 			win:       Gosu::Color.argb(0xff_0044ff),
 			lose:      Gosu::Color.argb(0xff_ff4400),
-			final_bg:  Gosu::Color.argb(0x99_cccccc)
+			final_bg:  Gosu::Color.argb(0x99_cccccc),
+			default:   Gosu::Color.argb(0xff_000000)
 		}
 
 		@game_running = true
@@ -16,10 +17,11 @@ class Game < Gosu::Window
 		@has_lost = false
 
 		@final_font = Gosu::Font.new 64
+		@time_font = Gosu::Font.new 32
 
 		@grid_args = {
 			y:     $settings.panel[:size][:h],
-			grid:  { x: 16, y: 8 }
+			grid:  { x: 8, y: 8 }
 		}
 
 		@panel = Panel.new
@@ -93,6 +95,8 @@ class Game < Gosu::Window
 			Gosu.draw_rect (screen[:w] / 2 - 192), (screen[:h] / 2 - 64), 384,128, @colors[:final_bg], 40
 			if (@has_won && !@has_lost)     # WON
 				@final_font.draw_rel "You WIN!", (screen[:w] / 2), (screen[:h] / 2), 50, 0.5,0.4, 1,1, @colors[:win]
+				# Draw final time
+				@time_font.draw_rel "#{@final_time}", (screen[:w] / 2), (screen[:h] / 2 + 40), 50, 0.5,0.4, 1,1, @colors[:default]
 			# Draw when lost
 			elsif (@has_lost && !@has_won)  # LOST
 				@final_font.draw_rel "You LOSE!", (screen[:w] / 2), (screen[:h] / 2), 50, 0.5,0.4, 1,1, @colors[:lose]
