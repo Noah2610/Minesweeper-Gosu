@@ -1,6 +1,6 @@
 
 class Grid
-	attr_reader :bomb_count
+	attr_reader :bomb_count, :grid
 
 	def initialize args = {}
 		@x = args[:x] || 0

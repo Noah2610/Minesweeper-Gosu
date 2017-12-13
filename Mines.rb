@@ -13,6 +13,7 @@ require 'byebug'
 
 require File.join DIR, 'src/Settings'
 require File.join DIR, 'src/Resource'
+require File.join DIR, 'src/SaveFile'
 require File.join DIR, 'src/Panel'
 require File.join DIR, 'src/Grid'
 require File.join DIR, 'src/Cell'
