@@ -59,6 +59,7 @@ class Grid
 		cell.activate!
 		# lose condition
 		if (cell.is_bomb?)
+			reveal_cells
 			$game.lose
 			return
 		end
@@ -194,6 +195,10 @@ class Grid
 		end
 
 		return cells
+	end
+
+	def reveal_cells
+		@cells.flatten.each &:reveal
 	end
 
 	def draw

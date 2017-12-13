@@ -19,7 +19,7 @@ class Game < Gosu::Window
 
 		@grid_args = {
 			y:     $settings.panel[:size][:h],
-			grid:  { x: 4, y: 4 }
+			grid:  { x: 16, y: 8 }
 		}
 
 		@panel = Panel.new
