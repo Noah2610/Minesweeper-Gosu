@@ -9,7 +9,7 @@ class Settings
 		@controls = {
 			primary:    [ Gosu::MS_LEFT,  Gosu::KB_C ],
 			secondary:  [ Gosu::MS_RIGHT, Gosu::KB_X ],
-			reset:      [ Gosu::KB_N,     Gosu::KB_R ]
+			reset:      [ Gosu::KB_N,     Gosu::KB_R, Gosu::KB_Z ]
 		}
 
 		@cells = {

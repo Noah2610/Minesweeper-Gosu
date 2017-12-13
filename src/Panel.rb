@@ -16,6 +16,9 @@ class Panel
 		@smiley_state = :neutral
 
 		@smiley_scale = (@h.to_f * 0.9) / @smileys[:neutral].height.to_f
+
+		@bomb_count = 0
+		@flagged_count = 0
 	end
 
 	def click pos
@@ -32,6 +35,8 @@ class Panel
 		set_smiley :neutral
 		@time = nil
 		@time_start = nil
+		@bomb_count = 0
+		@flagged_count = 0
 	end
 
 	def set_smiley state
@@ -61,6 +66,11 @@ class Panel
 		"#{time.min.to_s.rjust(2,"0")}:#{time.sec.to_s.rjust(2,"0")}.#{time.nsec.to_s[0..1].rjust(2,"0")}"
 	end
 
+	def update_bomb_display args
+		@bomb_count = args[:bombs]     unless (args[:bombs].nil?)
+		@flagged_count = args[:flags]  unless (args[:flags].nil?)
+	end
+
 	def update
 		@time = Time.at(Time.now - @time_start)  unless (@time_start.nil?)
 	end
@@ -72,6 +82,9 @@ class Panel
 		# Draw smiley
 		@smileys[@smiley_state].draw (@x + (@w / 2) - (@smileys[@smiley_state].width / 2)), (@y + (@h / 2) - (@smileys[@smiley_state].height / 2)), 15, @smiley_scale,@smiley_scale
 
+		# Print flagged cells / bomb cell count
+		@font.draw_rel "#{@flagged_count} F / #{@bomb_count} B", (@x + 32),(@y + @h / 2),25, 0,0.4, 1,1, @colors[:font]
+
 		# Print time
 		unless (@time.nil?)
 			color = @colors[:font]
@@ -80,9 +93,9 @@ class Panel
 			elsif ($game.has_lost)
 				color = @colors[:font_lost]
 			end
-			@font.draw_rel convert_time(@time), (@w - 32),(@h / 2),25, 1,0.4, 1,1, color
+			@font.draw_rel convert_time(@time), (@x + @w - 32),(@y + @h / 2),25, 1,0.4, 1,1, color
 		else
-			@font.draw_rel "00:00.00", (@w - 32),(@h / 2),25, 1,0.4, 1,1, @colors[:font]
+			@font.draw_rel "00:00.00", (@x + @w - 32),(@y + @h / 2),25, 1,0.4, 1,1, @colors[:font]
 		end
 	end
 end

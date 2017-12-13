@@ -24,6 +24,7 @@ class Game < Gosu::Window
 
 		@panel = Panel.new
 		@grid = Grid.new @grid_args
+		@panel.update_bomb_display bombs: @grid.bomb_count
 
 		super $settings.screen[:w], $settings.screen[:h]
 		self.caption = "Minesweeper!"
@@ -49,6 +50,7 @@ class Game < Gosu::Window
 		@has_lost = false
 		@panel.reset
 		@grid = Grid.new @grid_args
+		@panel.update_bomb_display bombs: @grid.bomb_count
 	end
 
 	def button_down id
@@ -72,7 +74,7 @@ class Game < Gosu::Window
 
 	def update
 		@grid.mouse_pos x: mouse_x, y: mouse_y  if (@game_running)
-		@panel.update                           if ($update_counter % 8 == 0)
+		@panel.update                           if ($update_counter % 4 == 0)
 		$update_counter += 1
 	end
 

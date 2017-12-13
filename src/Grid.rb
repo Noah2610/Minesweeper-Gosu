@@ -1,5 +1,7 @@
 
 class Grid
+	attr_reader :bomb_count
+
 	def initialize args = {}
 		@x = args[:x] || 0
 		@y = args[:y] || 0
@@ -42,6 +44,7 @@ class Grid
 			$game.panel.start_timer
 		end
 		cell.flag!
+		$game.panel.update_bomb_display flags: (@cells.flatten.map { |c| c.is_flagged? } .reject { |b| !b } .size)
 	end
 
 	def mouse_pos pos
@@ -113,13 +116,11 @@ class Grid
 	end
 
 	def check_adjacent
-		@cells.each do |row|
-			row.each do |cell|
-				next  if (cell.is_bomb?)
-				get_adjacent_cells(cell).each do |adj|
-					next  if (adj.nil?)
-					cell.bomb_count += 1  if (adj.is_bomb?)
-				end
+		@cells.flatten.each do |cell|
+			next  if (cell.is_bomb?)
+			get_adjacent_cells(cell).each do |adj|
+				next  if (adj.nil?)
+				cell.bomb_count += 1  if (adj.is_bomb?)
 			end
 		end
 	end
@@ -161,15 +162,13 @@ class Grid
 		# Find by position (x,y) - collision checking
 		elsif (args.has_key? :pos)
 			pos = args[:pos]
-			@cells.each do |row|
-				row.each do |cell|
-					if ((pos[:x] >= cell.x &&
-							 pos[:y] >= cell.y) &&
-							(pos[:x] < (cell.x + cell.w) &&
-							 pos[:y] < (cell.y + cell.h))
-						 )
-						return cell
-					end
+			@cells.flatten.each do |cell|
+				if ((pos[:x] >= cell.x &&
+						pos[:y] >= cell.y) &&
+					(pos[:x] < (cell.x + cell.w) &&
+					 pos[:y] < (cell.y + cell.h))
+					 )
+					return cell
 				end
 			end
 		end
@@ -203,9 +202,7 @@ class Grid
 
 	def draw
 		# Draw cells
-		@cells.each do |row|
-			row.each &:draw
-		end
+		@cells.flatten.each &:draw
 	end
 end
 
