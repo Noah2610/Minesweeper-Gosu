@@ -1,0 +1,4 @@
+settings:
+  resolution: 960x640
+  grid: 8x8
+  bomb_percent: 20.0

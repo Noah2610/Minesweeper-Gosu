@@ -1,10 +1,11 @@
 
 class Settings
 	def initialize
+		@screen = $savefile.settings :screen
 		@screen = {
 			w: 960,
 			h: 640
-		}
+		}  if (@screen.nil?)
 
 		@controls = {
 			primary:    [ Gosu::MS_LEFT,  Gosu::KB_C ],
@@ -17,7 +18,7 @@ class Settings
 				w: 32,
 				h: 32
 			},
-			bombs:          20.0,    # in percent
+			bombs:          $savefile.settings(:bombs),
 			border_padding: 2,
 			colors: {
 				hidden:               Gosu::Color.argb(0xff_999999),
@@ -32,6 +33,7 @@ class Settings
 				font_flagged:         Gosu::Color.argb(0xff_cc4422)
 			}
 		}
+		@cells[:bombs] = 20.0  if (@cells[:bombs].nil?)  # in percent
 
 		@panel = {
 			size: {

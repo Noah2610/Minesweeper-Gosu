@@ -8,6 +8,7 @@
 
 DIR = "./#{File.dirname(__FILE__)}"
 require 'gosu'
+require 'yaml'
 require 'byebug'
 
 require File.join DIR, 'src/Settings'

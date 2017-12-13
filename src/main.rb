@@ -1,4 +1,45 @@
 
+class SaveFile
+	def initialize filename
+		file = File.join DIR, filename
+		@content = YAML.load_file file  if (File.exists? file)
+		@content = {}                   if (!@content)
+	end
+
+	def settings target
+		if (@content["settings"])
+
+			case target
+			when :screen
+				if (@content["settings"]["resolution"])
+					return {
+						w: @content["settings"]["resolution"].split("x")[0].to_i,
+						h: @content["settings"]["resolution"].split("x")[1].to_i
+					}
+				end
+
+			when :grid
+				if (@content["settings"]["grid"])
+					return {
+						grid: {
+							x: @content["settings"]["grid"].split("x")[0].to_i,
+							y: @content["settings"]["grid"].split("x")[1].to_i
+						}
+					}
+				end
+
+			when :bombs
+				if (@content["settings"]["bomb_percent"])
+					return @content["settings"]["bomb_percent"].to_f
+				end
+
+			end
+
+		end
+		return nil
+	end
+end
+
 
 class Game < Gosu::Window
 	attr_reader :cells, :panel, :game_running, :has_won, :has_lost
@@ -19,10 +60,9 @@ class Game < Gosu::Window
 		@final_font = Gosu::Font.new 64
 		@time_font = Gosu::Font.new 32
 
-		@grid_args = {
-			y:     $settings.panel[:size][:h],
-			grid:  { x: 8, y: 8 }
-		}
+		@grid_args = $savefile.settings :grid
+		@grid_args = {}  if (@grid_args.nil?)
+		@grid_args[:y] = $settings.panel[:size][:h]
 
 		@panel = Panel.new
 		@grid = Grid.new @grid_args
@@ -105,6 +145,8 @@ class Game < Gosu::Window
 	end
 end
 
+
+$savefile = SaveFile.new "savefile.yml"
 
 $update_counter = 0
 RES = Resource.new
