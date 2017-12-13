@@ -1,22 +1,18 @@
 
 class Settings
-	def self.screen
-		{
+	def initialize
+		@screen = {
 			w: 960,
 			h: 640
 		}
-	end
 
-	def self.controls
-		{
+		@controls = {
 			primary:    [ Gosu::MS_LEFT,  Gosu::KB_C ],
 			secondary:  [ Gosu::MS_RIGHT, Gosu::KB_X ],
 			reset:      [ Gosu::KB_N,     Gosu::KB_R ]
 		}
-	end
 
-	def self.cells
-		{
+		@cells = {
 			size: {
 				w: 32,
 				h: 32
@@ -36,19 +32,35 @@ class Settings
 				font_flagged:         Gosu::Color.argb(0xff_cc4422)
 			}
 		}
-	end
 
-	def self.panel
-		{
+		@panel = {
 			size: {
-				w:     Settings.screen[:w],
+				w:     screen[:w],
 				h:     64
 			},
 			colors: {
-				bg:    Gosu::Color.argb(0xff_cccccc),
-				font:  Gosu::Color.argb(0xff_000000)
+				bg:         Gosu::Color.argb(0xff_cccccc),
+				font:       Gosu::Color.argb(0xff_000000),
+				font_won:   Gosu::Color.argb(0xff_a4c639),
+				font_lost:  Gosu::Color.argb(0xff_af002a)
 			}
 		}
+	end
+
+	def screen
+		@screen
+	end
+
+	def controls
+		@controls
+	end
+
+	def cells
+		@cells
+	end
+
+	def panel
+		@panel
 	end
 
 end

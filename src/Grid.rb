@@ -3,15 +3,16 @@ class Grid
 	def initialize args = {}
 		@x = args[:x] || 0
 		@y = args[:y] || 0
-		@w = args[:w] || Settings.screen[:w] - @x
-		@h = args[:h] || Settings.screen[:h] - @y
-		@cell_size = args[:cell_size] || Settings.cells[:size]
+		@w = args[:w] || $settings.screen[:w] - @x
+		@h = args[:h] || $settings.screen[:h] - @y
+		@cell_size = args[:cell_size] || $settings.cells[:size]
 		@grid = args[:grid] || { x: nil, y: nil }
 
 		@activated_cells = []
 		@bomb_count = 0
 
 		@cell_hover = nil
+		@time_started = false
 
 		@cells = gen_cells
 		check_adjacent
@@ -22,6 +23,10 @@ class Grid
 	def click pos
 		cell = find_cell pos: { x: pos[:x], y: pos[:y] }
 		return  if (cell.nil? || cell.is_flagged?)
+		unless (@time_started)
+			@time_started = true
+			$game.panel.start_timer
+		end
 		activate_cell cell
 		# Check if all cells are activated - win condition
 		if (@activated_cells.size == @cells.flatten.size - @bomb_count)
@@ -32,6 +37,10 @@ class Grid
 	def click_alt pos
 		cell = find_cell pos: { x: pos[:x], y: pos[:y] }
 		return  if (cell.nil? || cell.is_activated?)
+		unless (@time_started)
+			@time_started = true
+			$game.panel.start_timer
+		end
 		cell.flag!
 	end
 
@@ -87,7 +96,7 @@ class Grid
 		end
 
 		# Add bombs
-		@bomb_count = ((cells.flatten.size.to_f / 100.0) * Settings.cells[:bombs]).round
+		@bomb_count = ((cells.flatten.size.to_f / 100.0) * $settings.cells[:bombs]).round
 		@bomb_count.times do |n|
 			success = false
 			while (!success)

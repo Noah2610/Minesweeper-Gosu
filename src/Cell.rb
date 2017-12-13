@@ -6,7 +6,7 @@ class Cell
 	def initialize args
 		@x = args[:x]
 		@y = args[:y]
-		size = args[:size] || Settings.cells[:size]
+		size = args[:size] || $settings.cells[:size]
 		@w = size[:w]
 		@h = size[:h]
 		@index = {
@@ -14,8 +14,8 @@ class Cell
 			y: args[:index][:y]
 		}
 
-		@colors = Settings.cells[:colors]
-		@border_padding = Settings.cells[:border_padding]
+		@colors = $settings.cells[:colors]
+		@border_padding = $settings.cells[:border_padding]
 
 		@font = RES.cell_font
 
