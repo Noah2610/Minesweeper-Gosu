@@ -76,12 +76,16 @@ class SaveFile
 			when :clock
 				return high.split(" | ")[2]
 
+			when :bombs
+				return high.split(" | ")[3]
+
 			when :full, :all
 				return {
 					time:   highscore(:time),
 					grid:   highscore(:grid),
 					date:   highscore(:date),
-					clock:  highscore(:clock)
+					clock:  highscore(:clock),
+					bombs:  highscore(:bombs)
 				}
 			end
 		end
@@ -90,7 +94,7 @@ class SaveFile
 
 	def set_highscore args
 		@content["highscores"] ||= {}
-		@content["highscores"][args[:grid]] = "#{args[:time]} | #{args[:date]} | #{args[:clock]}"
+		@content["highscores"][args[:grid]] = "#{args[:time]} | #{args[:date]} | #{args[:clock]} | #{args[:bombs]}"
 	end
 
 	def compare_time time1, time2
@@ -127,7 +131,7 @@ class SaveFile
 		@content["scores"] ||= {}
 		@content["scores"][grid] ||= {}
 		@content["scores"][grid][today] ||= []
-		@content["scores"][grid][today] << "#{time} | #{clock}"
+		@content["scores"][grid][today] << "#{time} | #{clock} | #{$settings.cells[:bombs]}%"
 
 		# Check and save highscore
 		high = compare_time time, highscore
@@ -139,7 +143,8 @@ class SaveFile
 					time:  time,
 					grid:  grid,
 					date:  today,
-					clock: clock
+					clock: clock,
+					bombs: "#{$settings.cells[:bombs]}%"
 				)
 			end
 		end
