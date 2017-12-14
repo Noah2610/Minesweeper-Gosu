@@ -6,7 +6,9 @@
 ### https://github.com/Noah2610/Minesweeper-Gosu ###
 ####################################################
 
-DIR = "./#{File.dirname(__FILE__)}"
+dir = "#{File.dirname(__FILE__)}"
+dir = "./#{dir}"  unless (dir[0] == "/" || dir[0..1] == "./")
+DIR = dir
 require 'time'
 require 'gosu'
 require 'yaml'
