@@ -14,10 +14,7 @@ class Settings
 		}
 
 		@cells = {
-			size: {
-				w: 32,
-				h: 32
-			},
+			size:           $savefile.settings(:cell_size),
 			bombs:          $savefile.settings(:bombs),
 			border_padding: 2,
 			colors: {
@@ -34,6 +31,10 @@ class Settings
 			}
 		}
 		@cells[:bombs] = 20.0  if (@cells[:bombs].nil?)  # in percent
+		@cells[:size] = {
+			w: 32,
+			h: 32
+		}  if (@cells[:size].nil?)
 
 		@panel = {
 			size: {
@@ -44,9 +45,12 @@ class Settings
 				bg:         Gosu::Color.argb(0xff_cccccc),
 				font:       Gosu::Color.argb(0xff_000000),
 				font_won:   Gosu::Color.argb(0xff_a4c639),
-				font_lost:  Gosu::Color.argb(0xff_af002a)
+				font_lost:  Gosu::Color.argb(0xff_af002a),
+				font_high:  Gosu::Color.argb(0xff_008000)
 			}
 		}
+
+		@quick_start = !!$savefile.settings(:quick_start)
 	end
 
 	def screen
@@ -63,6 +67,10 @@ class Settings
 
 	def panel
 		@panel
+	end
+
+	def quick_start?
+		@quick_start
 	end
 
 end

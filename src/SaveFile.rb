@@ -29,9 +29,22 @@ class SaveFile
 					}
 				end
 
+			when :cell_size
+				if (settings["cell_size"])
+					return {
+						w: settings["cell_size"].split("x")[0].to_i,
+						h: settings["cell_size"].split("x")[1].to_i
+					}
+				end
+
 			when :bombs
 				if (settings["bomb_percent"])
 					return settings["bomb_percent"].to_f
+				end
+
+			when :quick_start
+				if (!settings["quick_start"].nil?)
+					return !!settings["quick_start"]
 				end
 
 			end
@@ -40,9 +53,10 @@ class SaveFile
 		return nil
 	end
 
-	def highscore which = :time
-		@content["highscore"] ||= "59:59.99"
-		high = @content["highscore"]
+	def highscore which = :time, grid = "#{settings(:grid)[:grid][:x].to_i}x#{settings(:grid)[:grid][:y].to_i}"
+		@content["highscores"] ||= {}
+		@content["highscores"][grid] ||= nil
+		high = @content["highscores"][grid]
 		if (high)
 			case which
 			when :time
@@ -70,7 +84,8 @@ class SaveFile
 	end
 
 	def set_highscore args
-		@content["highscore"] = "#{args[:time]} | #{args[:grid]} | #{args[:date]} | #{args[:clock]}"
+		@content["highscores"] ||= {}
+		@content["highscores"][args[:grid]] = "#{args[:time]} | #{args[:date]} | #{args[:clock]}"
 	end
 
 	def compare_time time1, time2
@@ -101,7 +116,7 @@ class SaveFile
 		now = Time.now
 		today = now.strftime "%Y-%m-%d"
 		clock = now.strftime "%H:%M"
-		grid = "#{$game.grid.grid[:x]}x#{$game.grid.grid[:y]}"
+		grid = "#{$game.grid.grid[:x].to_i}x#{$game.grid.grid[:y].to_i}"
 
 		# Save score
 		@content["scores"] ||= {}
@@ -121,6 +136,7 @@ class SaveFile
 					date:  today,
 					clock: clock
 				)
+				$game.panel.update_highscore highscore
 			end
 		end
 

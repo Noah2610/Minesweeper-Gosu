@@ -19,6 +19,10 @@ class Grid
 		@cells = gen_cells
 		check_adjacent
 		center_grid         unless (@grid == { x: nil, y: nil })
+
+		if ($settings.quick_start?)
+			quick_start
+		end
 		
 	end
 
@@ -84,8 +88,8 @@ class Grid
 			y: @h.to_f / @cell_size[:h].to_f
 		}
 
-		@grid[:x] = @grid[:x] || grid[:x]
-		@grid[:y] = @grid[:y] || grid[:y]
+		@grid[:x] = grid[:x]  if (@grid[:x].nil? || @grid[:x] > grid[:x])
+		@grid[:y] = grid[:y]  if (@grid[:y].nil? || @grid[:y] > grid[:y])
 
 		@grid[:y].floor.times do |row|
 			cells_row = []
@@ -199,6 +203,15 @@ class Grid
 
 	def reveal_cells
 		@cells.flatten.each &:reveal
+	end
+
+	def quick_start
+		@cells.flatten.shuffle.each do |cell|
+			if (cell.no_bombs?)
+				activate_cell cell
+				break
+			end
+		end
 	end
 
 	def draw

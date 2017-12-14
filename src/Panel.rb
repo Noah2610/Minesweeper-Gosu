@@ -11,6 +11,7 @@ class Panel
 		@time = nil
 		@time_start = nil
 		@font = Gosu::Font.new 32
+		@font_high = Gosu::Font.new 20
 
 		@smileys = RES.smiley_images
 		@smiley_state = :neutral
@@ -19,6 +20,12 @@ class Panel
 
 		@bomb_count = 0
 		@flagged_count = 0
+
+		@highscore = $savefile.highscore
+	end
+
+	def update_highscore high
+		@highscore = high
 	end
 
 	def click pos
@@ -93,9 +100,15 @@ class Panel
 			elsif ($game.has_lost)
 				color = @colors[:font_lost]
 			end
-			@font.draw_rel convert_time(@time), (@x + @w - 32),(@y + @h / 2),25, 1,0.4, 1,1, color
+			@font.draw_rel convert_time(@time), (@x + @w - 32),(@y + @h / 2),25, 1,(@highscore.nil? ? 0.4 : 0.6), 1,1, color
 		else
-			@font.draw_rel "00:00.00", (@x + @w - 32),(@y + @h / 2),25, 1,0.4, 1,1, @colors[:font]
+			@font.draw_rel "00:00.00", (@x + @w - 32),(@y + @h / 2),25, 1,(@highscore.nil? ? 0.4 : 0.6), 1,1, @colors[:font]
+		end
+
+		# Print highscore
+		unless (@highscore.nil?)
+			@font_high.draw_rel "Highscore: ", (@x + @w - 112),(@y + @h / 2),25, 1,-0.5, 1,1, @colors[:font]
+			@font_high.draw_rel @highscore, (@x + @w - 32),(@y + @h / 2),25, 1,-0.5, 1,1, @colors[:font_high]
 		end
 	end
 end

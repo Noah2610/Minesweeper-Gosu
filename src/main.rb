@@ -7,8 +7,9 @@ class Game < Gosu::Window
 			bg:        Gosu::Color.argb(0xff_ffffff),
 			win:       Gosu::Color.argb(0xff_0044ff),
 			lose:      Gosu::Color.argb(0xff_ff4400),
-			final_bg:  Gosu::Color.argb(0x99_cccccc),
-			default:   Gosu::Color.argb(0xff_000000)
+			final_bg:  Gosu::Color.argb(0xaa_666666),
+			default:   Gosu::Color.argb(0xff_000000),
+			new_high:  Gosu::Color.argb(0xff_8DB600)
 		}
 
 		@game_running = true
@@ -96,6 +97,10 @@ class Game < Gosu::Window
 				@final_font.draw_rel "You WIN!", (screen[:w] / 2), (screen[:h] / 2), 50, 0.5,0.4, 1,1, @colors[:win]
 				# Draw final time
 				@time_font.draw_rel "#{@final_time}", (screen[:w] / 2), (screen[:h] / 2 + 40), 50, 0.5,0.4, 1,1, @colors[:default]
+				if ($savefile.compare_time(@final_time, $savefile.highscore) == @final_time)
+					grid = "#{$savefile.settings(:grid)[:grid][:x]}x#{$savefile.settings(:grid)[:grid][:y]}"
+					@time_font.draw_rel "New #{grid} Highscore!", (screen[:w] / 2), (screen[:h] / 2 - 40), 50, 0.5,0.4, 1,1, @colors[:new_high]
+				end
 			# Draw when lost
 			elsif (@has_lost && !@has_won)  # LOST
 				@final_font.draw_rel "You LOSE!", (screen[:w] / 2), (screen[:h] / 2), 50, 0.5,0.4, 1,1, @colors[:lose]
