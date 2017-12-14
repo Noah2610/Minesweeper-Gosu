@@ -51,10 +51,21 @@ class Settings
 		}
 
 		@quick_start = !!$savefile.settings(:quick_start)
+
+		@adjust_screen_to_grid = !!$savefile.settings(:adjust_screen_to_grid)
 	end
 
 	def screen
 		@screen
+	end
+
+	def set_screen args
+		@screen[:w] = args[:w]  unless (args[:w].nil?)
+		@screen[:h] = args[:h]  unless (args[:h].nil?)
+	end
+
+	def adjust_screen_to_grid?
+		!!@adjust_screen_to_grid
 	end
 
 	def controls

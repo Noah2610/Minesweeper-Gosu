@@ -47,13 +47,18 @@ class SaveFile
 					return !!settings["quick_start"]
 				end
 
+			when :adjust_screen_to_grid
+				if (!settings["adjust_screen_to_grid"].nil?)
+					return !!settings["adjust_screen_to_grid"]
+				end
+
 			end
 
 		end
 		return nil
 	end
 
-	def highscore which = :time, grid = "#{settings(:grid)[:grid][:x].to_i}x#{settings(:grid)[:grid][:y].to_i}"
+	def highscore which = :time, grid = "#{$game.grid.grid[:x].to_i}x#{$game.grid.grid[:y].to_i}"
 		@content["highscores"] ||= {}
 		@content["highscores"][grid] ||= nil
 		high = @content["highscores"][grid]
@@ -63,13 +68,13 @@ class SaveFile
 				return high.split(" | ")[0]
 
 			when :grid
-				return high.split(" | ")[1]
+				return grid
 
 			when :date
-				return high.split(" | ")[2]
+				return high.split(" | ")[1]
 
 			when :clock
-				return high.split(" | ")[3]
+				return high.split(" | ")[2]
 
 			when :full, :all
 				return {
@@ -136,7 +141,6 @@ class SaveFile
 					date:  today,
 					clock: clock
 				)
-				$game.panel.update_highscore highscore
 			end
 		end
 

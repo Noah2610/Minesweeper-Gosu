@@ -98,7 +98,7 @@ class Game < Gosu::Window
 				# Draw final time
 				@time_font.draw_rel "#{@final_time}", (screen[:w] / 2), (screen[:h] / 2 + 40), 50, 0.5,0.4, 1,1, @colors[:default]
 				if ($savefile.compare_time(@final_time, $savefile.highscore) == @final_time)
-					grid = "#{$savefile.settings(:grid)[:grid][:x]}x#{$savefile.settings(:grid)[:grid][:y]}"
+					grid = "#{@grid.grid[:x]}x#{@grid.grid[:y]}"
 					@time_font.draw_rel "New #{grid} Highscore!", (screen[:w] / 2), (screen[:h] / 2 - 40), 50, 0.5,0.4, 1,1, @colors[:new_high]
 				end
 			# Draw when lost

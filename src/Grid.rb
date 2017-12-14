@@ -1,6 +1,6 @@
 
 class Grid
-	attr_reader :bomb_count, :grid
+	attr_reader :bomb_count, :grid, :adjusted_grid
 
 	def initialize args = {}
 		@x = args[:x] || 0
@@ -8,7 +8,9 @@ class Grid
 		@w = args[:w] || $settings.screen[:w] - @x
 		@h = args[:h] || $settings.screen[:h] - @y
 		@cell_size = args[:cell_size] || $settings.cells[:size]
-		@grid = args[:grid] || { x: nil, y: nil }
+		@grid = args[:grid].dup || { x: nil, y: nil }
+
+		@adjusted_grid = false
 
 		@activated_cells = []
 		@bomb_count = 0
@@ -88,8 +90,24 @@ class Grid
 			y: @h.to_f / @cell_size[:h].to_f
 		}
 
-		@grid[:x] = grid[:x]  if (@grid[:x].nil? || @grid[:x] > grid[:x])
-		@grid[:y] = grid[:y]  if (@grid[:y].nil? || @grid[:y] > grid[:y])
+		if ($settings.adjust_screen_to_grid?)
+			# Adjust screen size to fit whole grid
+			$settings.set_screen w: (@grid[:x] * @cell_size[:w])                               if (@grid[:x] > grid[:x])
+			$settings.set_screen h: (@grid[:y] * @cell_size[:h] + $settings.panel[:size][:h])  if (@grid[:y] > grid[:y])
+			if (@w != $settings.screen[:w])
+				@w = $settings.screen[:w] - @x
+				@h = $settings.screen[:h] - @y
+			end
+
+		else
+			# Adjust grid to fit inside screen
+			if ((!@grid[:x].nil? && @grid[:x] > grid[:x]) ||
+				  (!@grid[:y].nil? && @grid[:y] > grid[:y]))
+				@grid[:x] = grid[:x].floor  if (@grid[:x].nil? || @grid[:x] > grid[:x])
+				@grid[:y] = grid[:y].floor  if (@grid[:y].nil? || @grid[:y] > grid[:y])
+				@adjusted_grid = true
+			end
+		end
 
 		@grid[:y].floor.times do |row|
 			cells_row = []
