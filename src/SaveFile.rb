@@ -1,9 +1,12 @@
 
 class SaveFile
+	attr_reader :prev_highscore
+
 	def initialize filename
 		@file = File.join DIR, filename
 		@content = YAML.load_file @file  if (File.exists? @file)
 		@content = {}                    if (!@content)
+		@prev_highscore = nil
 	end
 
 	def settings target
@@ -93,15 +96,19 @@ class SaveFile
 	end
 
 	def set_highscore args
+		@prev_highscore = @content["highscores"][args[:grid]]
 		@content["highscores"] ||= {}
 		@content["highscores"][args[:grid]] = "#{args[:time]} | #{args[:date]} | #{args[:clock]} | #{args[:bombs]}"
 	end
 
 	def compare_time time1, time2, opt = :time
+		opt = :diff  if (opt == :difference)
 		if    (!time1.nil? && time2.nil?)
-			return time1
+			return time1  if (opt == :time)
+			return nil    if (opt == :diff)
 		elsif (!time2.nil? && time1.nil?)
-			return time2
+			return time2  if (opt == :time)
+			return nil    if (opt == :diff)
 		elsif (time1.nil? && time2.nil?)
 			return nil
 		end
@@ -121,7 +128,7 @@ class SaveFile
 			end
 			return nil
 
-		when :diff, :difference
+		when :diff
 			# Compares times and returns the difference
 			diff = t1.to_f - t2.to_f
 			pre = diff >= 0 ? "+" : "-"
@@ -130,9 +137,9 @@ class SaveFile
 			ret = ""
 			if (mins > 0)
 				secs -= mins * 60
-				ret = "#{pre} #{mins.to_s.rjust("0",2)}:#{secs.floor}#{secs.to_s[/\..+$/][0..2]}"
+				ret = "#{pre} #{mins.to_s.rjust(2,"0")}:#{secs.floor.to_s.rjust(2,"0")}#{secs.to_s[/\..+$/][0..2]}"
 			elsif (mins == 0)
-				ret = "#{pre} #{secs.floor}#{secs.to_s[/\..+$/][0..2]}"
+				ret = "#{pre} #{secs.floor.to_s.rjust(2,"0")}#{secs.to_s[/\..+$/][0..2]}"
 			end
 			return (ret)
 
