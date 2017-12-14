@@ -97,8 +97,7 @@ class SaveFile
 		@content["highscores"][args[:grid]] = "#{args[:time]} | #{args[:date]} | #{args[:clock]} | #{args[:bombs]}"
 	end
 
-	def compare_time time1, time2
-		# Compares times and returns smaller time (higher score)
+	def compare_time time1, time2, opt = :time
 		if    (!time1.nil? && time2.nil?)
 			return time1
 		elsif (!time2.nil? && time1.nil?)
@@ -107,17 +106,37 @@ class SaveFile
 			return nil
 		end
 
-		t1 = DateTime.strptime(time1, "%M:%S.%N")
-		t2 = DateTime.strptime(time2, "%M:%S.%N")
+		t1 = Time.strptime(time1, "%M:%S.%N")
+		t2 = Time.strptime(time2, "%M:%S.%N")
 
-		if    (t1 < t2)
-			return time1
-		elsif (t2 < t1)
-			return time2
-		elsif (t1 == t2)
-			return time1
+		case opt
+		when :time
+			# Compares times and returns smaller time (higher score)
+			if    (t1 < t2)
+				return time1
+			elsif (t2 < t1)
+				return time2
+			elsif (t1 == t2)
+				return time1
+			end
+			return nil
+
+		when :diff, :difference
+			# Compares times and returns the difference
+			diff = t1.to_f - t2.to_f
+			pre = diff >= 0 ? "+" : "-"
+			secs = diff.dup.abs
+			mins = (secs / 60.0).floor
+			ret = ""
+			if (mins > 0)
+				secs -= mins * 60
+				ret = "#{pre} #{mins.to_s.rjust("0",2)}:#{secs.floor}#{secs.to_s[/\..+$/][0..2]}"
+			elsif (mins == 0)
+				ret = "#{pre} #{secs.floor}#{secs.to_s[/\..+$/][0..2]}"
+			end
+			return (ret)
+
 		end
-		return nil
 
 	end
 

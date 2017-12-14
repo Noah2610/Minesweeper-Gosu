@@ -7,6 +7,7 @@
 ####################################################
 
 DIR = "./#{File.dirname(__FILE__)}"
+require 'time'
 require 'gosu'
 require 'yaml'
 require 'byebug'

@@ -97,9 +97,15 @@ class Game < Gosu::Window
 				@final_font.draw_rel "You WIN!", (screen[:w] / 2), (screen[:h] / 2), 50, 0.5,0.4, 1,1, @colors[:win]
 				# Draw final time
 				@time_font.draw_rel "#{@final_time}", (screen[:w] / 2), (screen[:h] / 2 + 40), 50, 0.5,0.4, 1,1, @colors[:default]
+				diff = $savefile.compare_time(@final_time, $savefile.highscore, :difference)
 				if ($savefile.compare_time(@final_time, $savefile.highscore) == @final_time)
 					grid = "#{@grid.grid[:x]}x#{@grid.grid[:y]}"
 					@time_font.draw_rel "New #{grid} Highscore!", (screen[:w] / 2), (screen[:h] / 2 - 40), 50, 0.5,0.4, 1,1, @colors[:new_high]
+					# Draw time difference to highscore
+					@time_font.draw_rel diff, (screen[:w] / 2 + 128), (screen[:h] / 2 + 40), 50, 1,0.4, 1,1, @colors[:new_high]
+				else
+					# Draw time difference to highscore
+					@time_font.draw_rel diff, (screen[:w] / 2 + 128), (screen[:h] / 2 + 40), 50, 1,0.4, 1,1, @colors[:lose]
 				end
 			# Draw when lost
 			elsif (@has_lost && !@has_won)  # LOST
