@@ -9,6 +9,7 @@
 dir = "#{File.dirname(__FILE__)}"
 dir = "./#{dir}"  unless (dir[0] == "/" || dir[0..1] == "./")
 DIR = dir
+
 require 'time'
 require 'gosu'
 require 'yaml'
@@ -21,5 +22,4 @@ require File.join DIR, 'src/Panel'
 require File.join DIR, 'src/Grid'
 require File.join DIR, 'src/Cell'
 require File.join DIR, 'src/main'
-
 

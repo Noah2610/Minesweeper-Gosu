@@ -61,10 +61,10 @@ class SaveFile
 		return nil
 	end
 
-	def highscore which = :time, grid = "#{$game.grid.grid[:x].to_i}x#{$game.grid.grid[:y].to_i}"
+	def highscore which = :time, grid = "#{$game.grid.grid[:x].to_i}x#{$game.grid.grid[:y].to_i}", bombs = "#{$settings.cells[:bombs]}"
 		@content["highscores"] ||= {}
-		@content["highscores"][grid] ||= nil
-		high = @content["highscores"][grid]
+		@content["highscores"]["#{grid} | #{bombs}%"] ||= nil
+		high = @content["highscores"]["#{grid} | #{bombs}%"]
 		if (high)
 			case which
 			when :time
@@ -80,7 +80,7 @@ class SaveFile
 				return high.split(" | ")[2]
 
 			when :bombs
-				return high.split(" | ")[3]
+				return bombs
 
 			when :full, :all
 				return {
@@ -96,9 +96,9 @@ class SaveFile
 	end
 
 	def set_highscore args
-		@prev_highscore = @content["highscores"][args[:grid]]
+		@prev_highscore = @content["highscores"]["#{args[:grid]} | #{args[:bombs]}%"]
 		@content["highscores"] ||= {}
-		@content["highscores"][args[:grid]] = "#{args[:time]} | #{args[:date]} | #{args[:clock]} | #{args[:bombs]}"
+		@content["highscores"]["#{args[:grid]} | #{args[:bombs]}%"] = "#{args[:time]} | #{args[:date]} | #{args[:clock]}"
 	end
 
 	def compare_time time1, time2, opt = :time
@@ -141,7 +141,7 @@ class SaveFile
 			elsif (mins == 0)
 				ret = "#{pre} #{secs.floor.to_s.rjust(2,"0")}#{secs.to_s[/\..+$/][0..2]}"
 			end
-			return (ret)
+			return ret
 
 		end
 
@@ -155,9 +155,9 @@ class SaveFile
 
 		# Save score
 		@content["scores"] ||= {}
-		@content["scores"][grid] ||= {}
-		@content["scores"][grid][today] ||= []
-		@content["scores"][grid][today] << "#{time} | #{clock} | #{$settings.cells[:bombs]}%"
+		@content["scores"]["#{grid} | #{$settings.cells[:bombs]}%"] ||= {}
+		@content["scores"]["#{grid} | #{$settings.cells[:bombs]}%"][today] ||= []
+		@content["scores"]["#{grid} | #{$settings.cells[:bombs]}%"][today] << "#{time} | #{clock}"
 
 		# Check and save highscore
 		high = compare_time time, highscore
@@ -170,7 +170,7 @@ class SaveFile
 					grid:  grid,
 					date:  today,
 					clock: clock,
-					bombs: "#{$settings.cells[:bombs]}%"
+					bombs: "#{$settings.cells[:bombs]}"
 				)
 			end
 		end
