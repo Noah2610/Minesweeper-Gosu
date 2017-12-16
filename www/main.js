@@ -19,7 +19,7 @@ $(document).ready(function () {
 		}
 	}
 
-	function sort_scores(g1, g2) {
+	function sort_groups(g1, g2) {
 			var grid1 = {
 				x: parseInt(g1.split(" | ")[0].split("x")[0]),
 				y: parseInt(g1.split(" | ")[0].split("x")[1])
@@ -37,9 +37,25 @@ $(document).ready(function () {
 			return val2 - val1;
 	}
 
+	function sort_scores(s1, s2) {
+		var score1 = s1.split(" | ")[0];
+		var min1 = score1.split(":")[0];
+		var sec1 = score1.split(":")[1].split(".")[0];
+		var nsec1 = score1.split(":")[1].split(".")[1];
+		var score2 = s2.split(" | ")[0];
+		var min2 = score2.split(":")[0];
+		var sec2 = score2.split(":")[1].split(".")[0];
+		var nsec2 = score2.split(":")[1].split(".")[1];
+
+		var val1 = parseFloat(String((min1 * 60) + sec1) + "." + String(nsec1));
+		var val2 = parseFloat(String((min2 * 60) + sec2) + "." + String(nsec2));
+
+		return val1 - val2;
+	}
+
 	function get_highscores(highscores) {
 		var ul = $('#highscores ul');
-		Object.keys(highscores).sort(sort_scores).forEach(function (group) {
+		Object.keys(highscores).sort(sort_groups).forEach(function (group) {
 			high = highscores[group];
 			console.log(group + " :: " + high);
 
@@ -54,7 +70,7 @@ $(document).ready(function () {
 	function get_scores(scores) {
 		var body = $('#scores #scores_body');
 
-		Object.keys(scores).sort(sort_scores).forEach(function (group) {
+		Object.keys(scores).sort(sort_groups).forEach(function (group) {
 			var ul = $(document.createElement("ul"));
 				ul.addClass("list-group");
 
@@ -74,7 +90,7 @@ $(document).ready(function () {
 				var ul_scores = $(document.createElement("ul"));
 					ul_scores.addClass("list-group");
 
-				scores[group][date].forEach(function (score) {
+				scores[group][date].sort(sort_scores).forEach(function (score) {
 					var li_scores = $(document.createElement("li"));
 						li_scores.addClass("list-group-item");
 						li_scores.text(score);
