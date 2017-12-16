@@ -57,7 +57,6 @@ $(document).ready(function () {
 		var ul = $('#highscores ul');
 		Object.keys(highscores).sort(sort_groups).forEach(function (group) {
 			high = highscores[group];
-			console.log(group + " :: " + high);
 
 			var li = $(document.createElement("li"));
 				li.addClass("list-group-item");
