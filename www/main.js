@@ -17,12 +17,29 @@ $(document).ready(function () {
 				$(this).css("display", "none");
 			});
 		}
+	}
 
+	function sort_scores(g1, g2) {
+			var grid1 = {
+				x: parseInt(g1.split(" | ")[0].split("x")[0]),
+				y: parseInt(g1.split(" | ")[0].split("x")[1])
+			}
+			var perc1 = parseInt(g1.split(" | ")[1].replace("%",""));
+			var grid2 = {
+				x: parseInt(g2.split(" | ")[0].split("x")[0]),
+				y: parseInt(g2.split(" | ")[0].split("x")[1])
+			}
+			var perc2 = parseInt(g2.split(" | ")[1].replace("%",""));
+
+			var val1 = ((grid1.x * grid1.y) / 100.0) * perc1;
+			var val2 = ((grid2.x * grid2.y) / 100.0) * perc2;
+
+			return val2 - val1;
 	}
 
 	function get_highscores(highscores) {
 		var ul = $('#highscores ul');
-		Object.keys(highscores).forEach(function (group) {
+		Object.keys(highscores).sort(sort_scores).forEach(function (group) {
 			high = highscores[group];
 			console.log(group + " :: " + high);
 
@@ -37,7 +54,7 @@ $(document).ready(function () {
 	function get_scores(scores) {
 		var body = $('#scores #scores_body');
 
-		Object.keys(scores).forEach(function (group) {
+		Object.keys(scores).sort(sort_scores).forEach(function (group) {
 			var ul = $(document.createElement("ul"));
 				ul.addClass("list-group");
 
