@@ -1,3 +1,4 @@
+require File.join DIR, 'src/yaml_to_json.rb'
 
 class SaveFile
 	attr_reader :prev_highscore
@@ -176,6 +177,7 @@ class SaveFile
 		end
 
 		save_to_file
+		gen_json_from_yaml @file, './savefile.json'
 	end
 
 	def save_to_file
