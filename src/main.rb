@@ -76,7 +76,7 @@ class Game < Gosu::Window
 
 	def update
 		@grid.mouse_pos x: mouse_x, y: mouse_y  if (@game_running)
-		@panel.update                           if ($update_counter % 4 == 0)
+		@panel.update                           #if ($update_counter % 4 == 0)
 		$update_counter += 1
 	end
 

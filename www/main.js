@@ -1,7 +1,25 @@
 
-
-
 $(document).ready(function () {
+	function toggle_score_group() {
+		var group = $(this);
+		var uls = group.siblings('ul');
+
+		if (group.hasClass("collapsed")) {
+			// Expand
+			group.removeClass("collapsed");
+			uls.each(function () {
+				$(this).css("display", "block");
+			});
+		} else {
+			// Collapse
+			group.addClass("collapsed");
+			uls.each(function () {
+				$(this).css("display", "none");
+			});
+		}
+
+	}
+
 	function get_highscores(highscores) {
 		var ul = $('#highscores ul');
 		Object.keys(highscores).forEach(function (group) {
@@ -25,12 +43,12 @@ $(document).ready(function () {
 
 			var li = $(document.createElement("li"));
 				li.addClass("list-group-item");
-				li.append('<h4>'+ group +'</h4>');
+				li.append('<h4 class="scores_groups collapsed">'+ group +'</h4>');
 
 			Object.keys(scores[group]).forEach(function (date) {
-				// Dates
 				var ul_dates = $(document.createElement("ul"));
 					ul_dates.addClass("list-group");
+					ul_dates.css("display", "none");
 
 				var li_dates = $(document.createElement("li"));
 					li_dates.addClass("list-group-item");
@@ -55,6 +73,8 @@ $(document).ready(function () {
 
 			ul.append(li);
 			body.append(ul);
+
+			li.find('h4').get(0).addEventListener("click", toggle_score_group);
 		});
 
 	}

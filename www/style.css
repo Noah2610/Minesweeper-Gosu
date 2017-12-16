@@ -1,0 +1,12 @@
+
+h4.scores_groups {
+	cursor: pointer;
+}
+
+h4.scores_groups.collapsed::after {
+	content: " ...";
+	display: inline;
+	font-weight: bold;
+	font-size: 24;
+}
+
