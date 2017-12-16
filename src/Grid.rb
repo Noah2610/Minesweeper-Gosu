@@ -93,15 +93,14 @@ class Grid
 		if (@grid[:x].nil? || @grid[:y].nil?)
 			# Fill screen with grid
 			@grid = grid
+		end
 
-		elsif ($settings.adjust_screen_to_grid?)
+		if ($settings.adjust_screen_to_grid?)
 			# Adjust screen size to fit whole grid
 			$settings.set_screen w: (@grid[:x] * @cell_size[:w])                               if (@grid[:x] > grid[:x])
 			$settings.set_screen h: (@grid[:y] * @cell_size[:h] + $settings.panel[:size][:h])  if (@grid[:y] > grid[:y])
-			if (@w != $settings.screen[:w])
-				@w = $settings.screen[:w] - @x
-				@h = $settings.screen[:h] - @y
-			end
+			@w = $settings.screen[:w] - @x
+			@h = $settings.screen[:h] - @y
 
 		else
 			# Adjust grid to fit inside screen
@@ -156,8 +155,8 @@ class Grid
 		# Center the grid of cells
 		center_cell = find_cell(
 			index: {
-				x: ((@cells[0].size - 1) / 2).floor,
-				y: ((@cells.size - 1) / 2).floor
+				x: (@grid[:x] / 2).floor,
+				y: (@grid[:y] / 2).floor
 			}
 		)
 		center_pos = {
@@ -169,10 +168,9 @@ class Grid
 			y:  (center_pos[:y] - center_cell.y)
 		}
 
-		
 		# if grid is even, adjust position(s)
-		diff[:x] -= center_cell.w / 2  if (@grid[:x] % 2 == 0)
-		diff[:y] -= center_cell.h / 2  if (@grid[:y] % 2 == 0)
+		diff[:x] += center_cell.w / 2  if (@grid[:x] % 2 == 0)
+		diff[:y] += center_cell.h / 2  if (@grid[:y] % 2 == 0)
 
 		@cells.flatten.each do |cell|
 			cell.add_pos diff
