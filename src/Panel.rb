@@ -113,6 +113,8 @@ class Panel
 		# Display that grid has been resized to fit into screen
 		if ($game.grid.adjusted_grid)
 			@font_extra.draw_rel "Grid resized to #{$game.grid.grid[:x]}x#{$game.grid.grid[:y]}", (@x + (@w / 4)),(@y + @h / 2),25, 0,0.4, 1,1, @colors[:font]
+		else
+			@font_extra.draw_rel "#{$game.grid.grid[:x]}x#{$game.grid.grid[:y]}", (@x + (@w / 4)),(@y + @h / 2),25, 0,0.4, 1.25,1.25, @colors[:font]
 		end
 	end
 end

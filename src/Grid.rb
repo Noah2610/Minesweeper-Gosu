@@ -86,11 +86,15 @@ class Grid
 		cells = []
 
 		grid = {
-			x: @w.to_f / @cell_size[:w].to_f,
-			y: @h.to_f / @cell_size[:h].to_f
+			x: (@w.to_f / @cell_size[:w].to_f).floor,
+			y: (@h.to_f / @cell_size[:h].to_f).floor
 		}
 
-		if ($settings.adjust_screen_to_grid?)
+		if (@grid[:x].nil? || @grid[:y].nil?)
+			# Fill screen with grid
+			@grid = grid
+
+		elsif ($settings.adjust_screen_to_grid?)
 			# Adjust screen size to fit whole grid
 			$settings.set_screen w: (@grid[:x] * @cell_size[:w])                               if (@grid[:x] > grid[:x])
 			$settings.set_screen h: (@grid[:y] * @cell_size[:h] + $settings.panel[:size][:h])  if (@grid[:y] > grid[:y])
