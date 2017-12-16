@@ -30,13 +30,14 @@ $(document).ready(function () {
 			Object.keys(scores[group]).forEach(function (date) {
 				// Dates
 				var ul_dates = $(document.createElement("ul"));
-					ul.addClass("list-group");
+					ul_dates.addClass("list-group");
 
 				var li_dates = $(document.createElement("li"));
 					li_dates.addClass("list-group-item");
 					li_dates.append('<strong>'+ date +'</strong>');
 
 				var ul_scores = $(document.createElement("ul"));
+					ul_scores.addClass("list-group");
 
 				scores[group][date].forEach(function (score) {
 					var li_scores = $(document.createElement("li"));
