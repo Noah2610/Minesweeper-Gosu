@@ -3,16 +3,21 @@ $(document).ready(function () {
 	function toggle_score_group() {
 		var group = $(this);
 		var uls = group.siblings('ul');
+		var dots = $(group.find('.scores_groups__expand').get(0));
 
 		if (group.hasClass("collapsed")) {
 			// Expand
 			group.removeClass("collapsed");
+			// Remove '...'
+			dots.text("");
 			uls.each(function () {
 				$(this).css("display", "block");
 			});
 		} else {
 			// Collapse
 			group.addClass("collapsed");
+			// Add '...'
+			dots.text("...");
 			uls.each(function () {
 				$(this).css("display", "none");
 			});
@@ -74,12 +79,16 @@ $(document).ready(function () {
 	function get_highscores(highscores) {
 		var ul = $('#highscores ul');
 		Object.keys(highscores).sort(sort_groups).forEach(function (group) {
-			high = highscores[group];
+			var high = highscores[group];
+			var grid = group.split(" | ")[0];
+			var bombs = group.split(" | ")[1];
 
 			var li = $(document.createElement("li"));
 				li.addClass("list-group-item");
-				li.append('<strong>'+ group +'</strong><br />');
-				li.append('<span>'+ high +'</span>');
+				var el_grid = '<span class="col-xs-6 highscores_groups__grid"><h4 class="highscores_groups__h4">'+ grid +'</h4></span>';
+				var el_bombs = '<span class="col-xs-6 highscores_groups__bombs">Bomb percentage: <h4 class="highscores_groups__h4">'+ bombs +'</h4></span>';
+				li.append('<div class="row highscores_groups">'+ el_grid + el_bombs +'</div><br />');
+				li.append('<span class="highscore">'+ high +'</span>');
 			ul.append(li);
 		});
 	}
@@ -88,12 +97,18 @@ $(document).ready(function () {
 		var body = $('#scores #scores_body');
 
 		Object.keys(scores).sort(sort_groups).forEach(function (group) {
+			var grid = group.split(" | ")[0];
+			var bombs = group.split(" | ")[1];
+
 			var ul = $(document.createElement("ul"));
 				ul.addClass("list-group");
 
 			var li = $(document.createElement("li"));
 				li.addClass("list-group-item");
-				li.append('<h4 class="scores_groups collapsed">'+ group +'</h4>');
+				var h4_grid = '<span class="col-xs-4 scores_groups__grid"><h4 class="scores_groups__h4">'+ grid +'</h4></span>';
+				var h4_bombs = '<span class="col-xs-4 scores_groups__bombs">Bomb percentage: <h4 class="scores_groups__h4">'+ bombs +'</h4></span>';
+				var expand_dots = '<span class="col-xs-4 scores_groups__expand">...</span>';
+				li.append('<div class="row scores_groups collapsed">'+ h4_grid + expand_dots + h4_bombs +'</div>');
 
 			Object.keys(scores[group]).sort(sort_dates).forEach(function (date) {
 				var ul_dates = $(document.createElement("ul"));
@@ -124,7 +139,7 @@ $(document).ready(function () {
 			ul.append(li);
 			body.append(ul);
 
-			li.find('h4').get(0).addEventListener("click", toggle_score_group);
+			li.find('.scores_groups').get(0).addEventListener("click", toggle_score_group);
 		});
 
 	}

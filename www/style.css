@@ -1,13 +1,54 @@
 
-h4.scores_groups {
+.scores_groups {
+	display: inline;
 	font-weight: bold;
 	cursor: pointer;
 }
 
-h4.scores_groups.collapsed::after {
-	content: " ...";
+.scores_groups__grid {
+	display: inline;
+	text-align: left;
+	font-weight: normal;
+}
+
+.scores_groups__bombs {
+	display: inline;
+	text-align: right;
+	font-weight: normal;
+}
+
+.scores_groups__h4 {
 	display: inline;
 	font-weight: bold;
-	font-size: 24;
+}
+
+.scores_groups__expand {
+	text-align: center;
+	font-size: 32px;
+}
+
+
+/* Highscores */
+.highscores_groups {
+	display: inline;
+}
+
+.highscores_groups__grid {
+	display: inline;
+	text-align: left;
+}
+
+.highscores_groups__bombs {
+	display: inline;
+	text-align: right;
+}
+
+.highscores_groups__h4 {
+	display: inline;
+	font-weight: bold;
+}
+
+.highscore {
+	margin-left: 32px;
 }
 
