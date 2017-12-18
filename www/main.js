@@ -53,6 +53,24 @@ $(document).ready(function () {
 		return val1 - val2;
 	}
 
+	function sort_dates(d1, d2) {
+		var year1 = parseInt(d1.split("-")[0]);
+		var month1 = parseInt(d1.split("-")[1]);
+		var day1 = parseInt(d1.split("-")[2]);
+		var year2 = parseInt(d2.split("-")[0]);
+		var month2 = parseInt(d2.split("-")[1]);
+		var day2 = parseInt(d2.split("-")[2]);
+
+		if (year1 != year2) {
+			return year2 - year1
+		} else if (month1 != month2) {
+			return month2 - month1
+		} else if (day1 != day2) {
+			return day2 - day1
+		}
+
+	}
+
 	function get_highscores(highscores) {
 		var ul = $('#highscores ul');
 		Object.keys(highscores).sort(sort_groups).forEach(function (group) {
@@ -77,7 +95,7 @@ $(document).ready(function () {
 				li.addClass("list-group-item");
 				li.append('<h4 class="scores_groups collapsed">'+ group +'</h4>');
 
-			Object.keys(scores[group]).forEach(function (date) {
+			Object.keys(scores[group]).sort(sort_dates).forEach(function (date) {
 				var ul_dates = $(document.createElement("ul"));
 					ul_dates.addClass("list-group");
 					ul_dates.css("display", "none");
