@@ -26,10 +26,68 @@ class Grid
 			quick_start
 		end
 		
+		@kb_cursor = nil
+	end
+
+	def move_cursor dir
+		if (@kb_cursor.nil?)
+			@kb_cursor = @cells.flatten.first
+
+		else
+			@kb_cursor.no_mouse_hover
+			case dir
+			when :up
+				@kb_cursor = find_cell(
+					index: {
+						x: @kb_cursor.index[:x],
+						y: (@kb_cursor.index[:y] - 1)
+					}
+				)
+			when :down
+				cell = find_cell(
+					index: {
+						x: @kb_cursor.index[:x],
+						y: (@kb_cursor.index[:y] + 1)
+					}
+				)
+				cell = find_cell(
+					index: {
+						x: @kb_cursor.index[:x],
+						y: 0
+					}
+				)  if (cell.nil?)
+				@kb_cursor = cell
+			when :left
+				@kb_cursor = find_cell(
+					index: {
+						x: (@kb_cursor.index[:x] - 1),
+						y: @kb_cursor.index[:y]
+					}
+				)
+			when :right
+				cell = find_cell(
+					index: {
+						x: (@kb_cursor.index[:x] + 1),
+						y: @kb_cursor.index[:y]
+					}
+				)
+				cell = find_cell(
+					index: {
+						x: 0,
+						y: @kb_cursor.index[:y]
+					}
+				)  if (cell.nil?)
+				@kb_cursor = cell
+			end
+		end
+
+		unless (@kb_cursor.nil?)
+			@kb_cursor.mouse_hover
+		end
 	end
 
 	def click pos
-		cell = find_cell pos: { x: pos[:x], y: pos[:y] }
+		cell = @kb_cursor.nil? ? (find_cell pos: { x: pos[:x], y: pos[:y] }) : (@kb_cursor)
 		return  if (cell.nil? || cell.is_flagged?)
 		unless (@time_started)
 			@time_started = true
@@ -44,7 +102,7 @@ class Grid
 	end
 
 	def click_alt pos
-		cell = find_cell pos: { x: pos[:x], y: pos[:y] }
+		cell = @kb_cursor.nil? ? (find_cell pos: { x: pos[:x], y: pos[:y] }) : (@kb_cursor)
 		return  if (cell.nil? || cell.is_activated?)
 		unless (@time_started)
 			@time_started = true

@@ -10,7 +10,11 @@ class Settings
 		@controls = {
 			primary:    [ Gosu::MS_LEFT,  Gosu::KB_C ],
 			secondary:  [ Gosu::MS_RIGHT, Gosu::KB_X ],
-			reset:      [ Gosu::KB_N,     Gosu::KB_R, Gosu::KB_Z ]
+			reset:      [ Gosu::KB_N,     Gosu::KB_R, Gosu::KB_Z ],
+			up:         [ Gosu::KB_K, Gosu::KB_UP ],
+			down:       [ Gosu::KB_J, Gosu::KB_DOWN ],
+			left:       [ Gosu::KB_H, Gosu::KB_LEFT ],
+			right:      [ Gosu::KB_L, Gosu::KB_RIGHT ]
 		}
 
 		@cells = {
@@ -21,6 +25,7 @@ class Settings
 				hidden:               Gosu::Color.argb(0xff_999999),
 				hidden_mouse_hover:   Gosu::Color.argb(0xff_bbbbbb),
 				shown:                Gosu::Color.argb(0xff_cccccc),
+				shown_mouse_hover:    Gosu::Color.argb(0xff_eeeeee),
 				bomb_shown:           Gosu::Color.argb(0xff_222222),
 				border:               Gosu::Color.argb(0xff_000000),
 				flagged:              Gosu::Color.argb(0xff_444444),

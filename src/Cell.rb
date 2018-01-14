@@ -108,7 +108,8 @@ class Cell
 		elsif (@activated)               # Activated by player
 			if (is_field?)
 				# Draw field
-				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:shown], 10
+				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:shown], 10                unless (@mouse_hovering)
+				Gosu.draw_rect (@x + @border_padding), (@y + @border_padding), (@w - (@border_padding * 2)), (@h - (@border_padding * 2)), @colors[:shown_mouse_hover], 10    if (@mouse_hovering)
 				# Bomb count font
 				@font.draw_rel @bomb_count.to_s, (@x + (@w / 2)), (@y + (@h / 2)), 15, 0.5,0.4, 1,1, @colors[:font_field]    unless (no_bombs?)
 			elsif (is_bomb?)

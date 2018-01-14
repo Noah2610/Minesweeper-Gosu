@@ -67,6 +67,15 @@ class Game < Gosu::Window
 			@panel.click x: mouse_x, y: mouse_y
 		elsif (controls[:reset].include? id)
 			reset
+		## Keyboard navigation
+		elsif (controls[:up].include? id)
+			@grid.move_cursor :up
+		elsif (controls[:down].include? id)
+			@grid.move_cursor :down
+		elsif (controls[:left].include? id)
+			@grid.move_cursor :left
+		elsif (controls[:right].include? id)
+			@grid.move_cursor :right
 		end
 	end
 
